@@ -6,7 +6,7 @@ authors = ["Pokapiec"]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-fastapi = "0.115.5"
+fastapi = { extras = ["standard"], version = "0.115.5" }
 python-multipart = "0.0.19"
 tinydb = "4.8.2"
 uvicorn = "0.32.1"

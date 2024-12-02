@@ -12,4 +12,5 @@ FROM python:3.11-slim
 WORKDIR /app
 COPY --from=builder /app/.venv .venv/
 COPY . .
-CMD ["gunicorn", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "main:app", "--bind", "0.0.0.0:80"]
+# CMD ["/app/.venv/bin/fastapi", "run"]
+CMD ["python", "-m", "gunicorn", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "app.main:app", "--bind", "0.0.0.0:8000"]
