@@ -17,9 +17,9 @@ min_machines_running = 0
 processes = ['app']
 
 [mounts]
-source = "tinydb-volume"
+source = "tinydb_vol"
 destination = "/db"
-initial_size = "1gb"     # optional - the size of the volume created on first deploy
+initial_size = "1gb"  # optional - the size of the volume created on first deploy
 
 [[vm]]
 memory = '512mb'
