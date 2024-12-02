@@ -9,6 +9,8 @@ python = "^3.11"
 fastapi = "0.115.5"
 python-multipart = "0.0.19"
 tinydb = "4.8.2"
+uvicorn = "0.32.1"
+gunicorn = "23.0.0"
 
 [build-system]
 requires = ["poetry-core"]
