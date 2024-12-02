@@ -92,12 +92,12 @@
 
             setTimeout(() => {
                 mainCard.innerHTML = `
-                <h3>You buy present for:</h3>
+                <h3>Kupujesz prezent dla:</h3>
                 <h1 class="reveald">${result}</h1>
                 `
 
                 mainCard.insertAdjacentHTML("afterend", `
-                <article>
+                <article class="centered-card">
                     <h3>Pomysły na prezent dla ${result}:</h3>
                     ${presentsMsg}
                 </article>
