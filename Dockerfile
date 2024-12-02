@@ -13,4 +13,4 @@ WORKDIR /app
 COPY --from=builder /app/.venv .venv/
 COPY . .
 # CMD ["/app/.venv/bin/fastapi", "run"]
-CMD ["/app/.venv/bin/gunicorn", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "app.main:app", "--bind", "0.0.0.0:8000"]
+CMD ["/app/.venv/bin/gunicorn", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "main:app", "--bind", "0.0.0.0:8000"]
