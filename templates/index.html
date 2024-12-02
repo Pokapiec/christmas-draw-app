@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/pico.min.css">
+    <link rel="stylesheet" href="/static/base.css">
+    <title>Losowanko!</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+</head>
+
+<body>
+    <main class="container">
+        <header>
+            <h1>Losowanie świąteczne Okapiec/Costanzo!</h1>
+            <hr>
+        </header>
+        <article id="shuffled" class="blur">
+        </article>
+        <article id="add-users">
+            <h2>Dodaj uczestnikow</h2>
+
+            <form method="POST" action="/shuffle">
+                <input name="name" type="text" placeholder="Type a name" required>
+                <input name="name" type="text" placeholder="Type a name" required>
+                <input name="name" type="text" placeholder="Type a name" required>
+                <button id="new-person" class="outline">Dodatkowa osoba</button>
+                <input type="submit" value="Generate">
+            </form>
+        </article>
+    </main>
+    <script>
+        const shuffledCont = document.getElementById("shuffled")
+        const newPersonBtn = document.getElementById("new-person")
+
+        newPersonBtn.addEventListener("click", (e) => {
+            e.preventDefault()
+            newPersonBtn.insertAdjacentHTML("beforebegin", `<input name="name" type="text" placeholder="Type a name" required>`)
+        })
+
+        async function fetchData() {
+            try {
+                const data = await fetch("/shuffle")
+                const jsonData = await data.json()
+                return jsonData
+            } catch {
+                console.error("Not shuffled data.")
+                return {}
+            }
+        }
+
+        (async () => {
+            const data = await fetchData();
+            let htmls = ""
+            Object.entries(data).forEach(([key, value]) => {
+                htmls += `<p><b>${key}</b> kupuje prezent dla <b>${value}</b></p><hr/>`
+            });
+
+            if (htmls === "") {
+                shuffledCont.remove()
+            } else {
+                shuffledCont.insertAdjacentHTML("beforeend", htmls.slice(0, -5))
+            }
+        })();
+
+    </script>
+</body>
+
+</html>

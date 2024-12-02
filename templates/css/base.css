@@ -1,0 +1,41 @@
+
+:root {
+    --pico-font-size: 16px;
+}
+
+#add-users,
+#shuffled,
+header {
+    min-width: 100px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+
+#add-users, #shuffled {
+    padding: 20px 50px;
+    margin: 40px auto;
+}
+
+form {
+    width: 100%;
+}
+
+form>input {
+    margin: 5px auto;
+}
+
+.reveald {
+    margin-top: 40px;
+    text-align: center;
+}
+
+
+#new-person {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.blur {
+    filter: blur(5px);
+}

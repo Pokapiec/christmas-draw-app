@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/pico.min.css">
+    <link rel="stylesheet" href="/static/base.css">
+    <title>Losowanko!</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <style>
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <header>
+            <h1>Losowanie świąteczne Okapiec/Costanzo!</h1>
+            <hr>
+        </header>
+        <article id="add-users">
+            <h2>Komu kupuje prezent ?</h2>
+            <hr />
+
+            <form id="reveal-form">
+                <label for="person">Wybierz siebie</label>
+                <select name="person" id="person-input" required>
+                </select>
+
+                <label for="present">Pomysły na prezent</label>
+                <input name="present" type="text" placeholder="Pomysł na prezent..." required>
+                <input name="present" type="text" placeholder="Pomysł na prezent..." required>
+                <input name="present" type="text" placeholder="Pomysł na prezent..." required>
+                <input type="submit" value="Komu kupuje prezent?">
+            </form>
+        </article>
+    </main>
+    <script>
+        const personInput = document.getElementById("person-input")
+        const revealForm = document.getElementById("reveal-form")
+        const mainCard = document.getElementById("add-users")
+        const presentInputs = document.getElementsByName("present")
+
+        personInput.addEventListener("change", () => {
+            setDefaultInputsValue()
+        })
+
+        let peopleData
+        let presentData
+
+        function setDefaultInputsValue() {
+            const currentPerson = personInput.value
+            const presents = presentData.filter((elem) => elem.person == currentPerson)
+
+            if (presents.length == 0) {
+                presentInputs.forEach(input => input.value = "")
+                return
+            }
+
+            const presentIdeas = presents[0].presents
+            if (presentIdeas.length !== presentInputs.length) {
+                presentInputs.forEach(input => input.value = "")
+                return
+            }
+
+            presentInputs.forEach((input, i) => {
+                input.value = presentIdeas[i]
+            })
+        }
+
+        revealForm.addEventListener("submit", async (e) => {
+            e.preventDefault()
+
+            const formData = new FormData(revealForm);
+            await fetch("/presents", { method: "POST", body: formData })
+
+            const result = peopleData[personInput.value]
+            const presents = presentData.filter((elem) => elem.person == result)
+
+            let presentsMsg
+
+            if (presents.length > 0) {
+                const presentIdeas = presents[0].presents
+                presentsMsg = presentIdeas.reduce((acc, cur) => acc + `<li>${cur}</li>`, "")
+                presentsMsg = `<ul>${presentsMsg}</ul>`
+            } else {
+                presentsMsg = `<h5>${result} nie podał/podała jeszcze jego prezentów</h5>`
+            }
+
+            console.log(presents)
+            mainCard.innerHTML = `<div aria-busy="true"></div>`
+
+            setTimeout(() => {
+                mainCard.innerHTML = `
+                <h3>You buy present for:</h3>
+                <h1 class="reveald">${result}</h1>
+                `
+
+                mainCard.insertAdjacentHTML("afterend", `
+                <article>
+                    <h3>Pomysły na prezent dla ${result}:</h3>
+                    ${presentsMsg}
+                </article>
+                `)
+            }, 1000)
+        })
+
+        async function fetchData(url) {
+            try {
+                const data = await fetch(url)
+                const jsonData = await data.json()
+                return jsonData
+            } catch {
+                console.error("Not shuffled data.")
+                return {}
+            }
+        }
+
+        window.onload = function () {
+            (async () => {
+                peopleData = await fetchData("/shuffle");
+                presentData = await fetchData("/presents");
+                let htmls = ""
+                Object.entries(peopleData).forEach(([key, value]) => {
+                    htmls += `<option value="${key}">${key}</option>`
+                });
+
+                personInput.innerHTML = htmls
+
+                setDefaultInputsValue()
+            })();
+        };
+
+    </script>
+</body>
+
+</html>
