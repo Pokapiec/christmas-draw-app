@@ -9,7 +9,7 @@ from fastapi.templating import Jinja2Templates
 from tinydb import TinyDB, Query
 
 
-db = TinyDB("db.json")
+db = TinyDB("db/db.json")
 
 Present = Query()
 Presents = db.table("presents")
