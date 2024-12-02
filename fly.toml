@@ -18,8 +18,8 @@ processes = ['app']
 
 [mounts]
 source = "tinydb_vol"
-destination = "/db"
-initial_size = "1gb"  # optional - the size of the volume created on first deploy
+destination = "/app/db"
+initial_size = "1gb"    # optional - the size of the volume created on first deploy
 
 [[vm]]
 memory = '512mb'

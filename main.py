@@ -44,7 +44,9 @@ async def presents_create(request: Request):
 
 @app.get("/shuffle")
 def get_shuffle():
-    return db.all()[0]
+    if results := db.all():
+        return results[0]
+    return {}
 
 
 @app.get("/presents")
